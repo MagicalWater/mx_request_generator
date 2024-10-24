@@ -1,0 +1,24 @@
+name: mx_request_generator
+description: 可使用annotation生成API的工具, 搭配mx_request使用
+version: 1.0.0
+homepage: https://github.com/MagicalWater/mx_request_generator
+
+environment:
+  sdk: ^3.5.3
+
+# Add regular dependencies here.
+dependencies:
+  source_gen: ^1.5.0
+  meta: ^1.15.0
+  analyzer: ^6.5.2
+  dart_style: ^2.3.7
+  code_builder: ^4.10.0
+  built_collection: ^5.1.1
+  build: ^2.4.1
+  mx_request: ^1.0.3
+
+dev_dependencies:
+  lints: ^4.0.0
+  test: ^1.24.0
+  build_runner: ^2.4.13
+  dio: ^5.7.0
