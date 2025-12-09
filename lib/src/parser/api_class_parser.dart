@@ -58,10 +58,10 @@ class ApiClassParser extends RequestParser {
 
     // 取得 method 裡面必選的參數(擁有名稱的必選參數不在此處)
     final requiredParam =
-        element.parameters.where((e) => e.isRequiredPositional).toList();
+        element.formalParameters.where((e) => e.isRequiredPositional).toList();
 
     // 取得 method 裡面可選或者擁有名稱的參數
-    final optionalParam = element.parameters
+    final optionalParam = element.formalParameters
         .where((e) => e.isOptional || e.isRequiredNamed)
         .toList();
 
@@ -163,7 +163,7 @@ class ApiClassParser extends RequestParser {
 
   /// 將參數轉換為 codeBuilder 添加方法參數的型態
   List<code_builder.Parameter> _convertToCodeBuilderParam(
-    List<ParameterElement> element,
+    List<FormalParameterElement> element,
     bool isOptional,
   ) {
     return element.map((e) {
@@ -183,7 +183,7 @@ class ApiClassParser extends RequestParser {
         p
           ..annotations.addAll(paramAnnotationCode)
           ..type = code_builder.refer(e.type.getDisplayString())
-          ..name = e.name
+          ..name = e.name ?? ''
           ..named = e.isNamed
           ..required = isOptional ? e.isRequired : false
           ..defaultTo = e.defaultValueCode == null
@@ -199,7 +199,7 @@ class ApiClassParser extends RequestParser {
   String? _addParamToContentBuilder({
     required RequestContentBuilder builder,
     required String? urlPath,
-    required List<ParameterElement> params,
+    required List<FormalParameterElement> params,
     required bool isRequiredRange,
   }) {
     String? currentPath = urlPath;

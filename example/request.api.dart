@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
 
 // **************************************************************************
 // ApiGenerator
@@ -39,10 +40,7 @@ abstract class ExRequestApi extends RequestBase implements ExRequestInterface {
       'opId2': opId2,
     });
 
-    final rowBodys = <String?>[
-      if (rawBody != null) rawBody,
-      optRawBody,
-    ];
+    final rowBodys = <String?>[if (rawBody != null) rawBody, optRawBody];
 
     if (rowBodys.isNotEmpty) {
       content.setBodyInRow(rowBodys.last);

@@ -14,13 +14,13 @@ enum ParamType { query, header, path, body }
 /// 傳入 Param 的 ConstantReader (annotation)
 /// 從 meta 取得 Api 的參數類型分類
 ParamType getParamType(ConstantReader annotation) {
-  if (annotation.instanceOf(const TypeChecker.fromRuntime(Query))) {
+  if (annotation.instanceOf(const TypeChecker.typeNamed(Query))) {
     return ParamType.query;
-  } else if (annotation.instanceOf(const TypeChecker.fromRuntime(Header))) {
+  } else if (annotation.instanceOf(const TypeChecker.typeNamed(Header))) {
     return ParamType.header;
-  } else if (annotation.instanceOf(const TypeChecker.fromRuntime(Path))) {
+  } else if (annotation.instanceOf(const TypeChecker.typeNamed(Path))) {
     return ParamType.path;
-  } else if (annotation.instanceOf(const TypeChecker.fromRuntime(Body))) {
+  } else if (annotation.instanceOf(const TypeChecker.typeNamed(Body))) {
     return ParamType.body;
   }
   throw '未知的 param: $annotation';
@@ -28,7 +28,7 @@ ParamType getParamType(ConstantReader annotation) {
 
 /// 傳入 [ParamElement]
 /// 傳回此參數是否為可空
-bool isFieldNullable(ParameterElement element) {
+bool isFieldNullable(FormalParameterElement element) {
   final name = element.type.getDisplayString();
   // print('獲取: $name, ${element.type.nullabilitySuffix}');
 //  print("打印類型名稱 ${element.type.runtimeType}, ${element.type}, $name");
@@ -41,7 +41,7 @@ ConstantReader getMethodReader(MethodElement element) {
 }
 
 /// 從method的參數中取得對應的meta data
-ConstantReader getParamReader(ParameterElement element) {
+ConstantReader getParamReader(FormalParameterElement element) {
   return findConstantReader(element, paramList);
 }
 
@@ -50,7 +50,7 @@ ConstantReader getParamReader(ParameterElement element) {
 ConstantReader findConstantReader(Element element, List<Type> findList) {
   for (final type in findList) {
     // 初始化 TypeChecker, 將要搜索的 annotation 類型包進去
-    final checker = TypeChecker.fromRuntime(type);
+    final checker = TypeChecker.typeNamed(type);
 
     // 使用 TypeChecker 在 MethodElement 裡面搜索對應 type 的物件
     final annotation = checker.firstAnnotationOf(

@@ -15,12 +15,20 @@ class ApiGenerator extends GeneratorForAnnotation<RequestIF> {
 
   @override
   dynamic generateForAnnotatedElement(
-      Element element, ConstantReader annotation, BuildStep buildStep) {
+      Element element, ConstantReader annotation, BuildStep buildStep) async {
+    final assetId = await buildStep.resolver.assetIdForElement(element);
+
     // 來源檔案的完整路徑
-    final sourceFullName = element.source!.fullName;
+    final sourceFullName = assetId.path;
 
     // 來源檔案檔名
-    final sourceShortName = element.source!.shortName;
+    final sourceShortName = assetId.pathSegments.last;
+
+    // // 來源檔案的完整路徑
+    // final sourceFullName = element.source!.fullName;
+    //
+    // // 來源檔案檔名
+    // final sourceShortName = element.source!.shortName;
 
     // api 實作類解析
     apiClassParser.parse(element);
@@ -40,7 +48,9 @@ class ApiGenerator extends GeneratorForAnnotation<RequestIF> {
       ''';
     }
 
-    return DartFormatter().format(finalText);
+    return DartFormatter(
+      languageVersion: DartFormatter.latestLanguageVersion,
+    ).format(finalText);
   }
 
   String getImportText(String sourceFile) {
